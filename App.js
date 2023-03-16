@@ -1,50 +1,88 @@
-//import logo from './logo.svg';
-import './App.css';
-import {useState} from "react";
+import "./App.css";
+import { useState } from "react";
+import { validateEmail } from "./utils";
+
+const PasswordErrorMessage = () => {
+  return (
+    <p className="FieldError">Password should have at least 8 characters</p>
+  );
+};
+
 function App() {
-  //const [name, setName] = useState("");
-  const [score, setScore]= useState("10");
-  const [comment,setComment]=useState("");
-  const handleSubmit=(e)=>{
-    e.preventDefault();
-    //setName("");
-    if(Number(score)<=5 && comment.length<=10){
-      alert("Please enter the comment why the quality is poor");
-      return;
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState({
+    value: "",
+    isTouched: false,
+  });
+  const [role, setRole] = useState("role");
+
+  const getIsFormValid = () => {
+    // Implement this function
+    if (firstName.length && role != "role" && password.value.length >= 8 && validateEmail(email)) {
+      return true;
     }
-    setScore("10");
-    setComment("");
-    console.log("Form Submited");
-  }
+    return false;
+  };
+
+  const clearForm = () => {
+    // Implement this function
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setRole("");
+  };
+
+  const handleSubmit = () => {
+    alert("Account created!");
+    clearForm();
+  };
+
   return (
     <div className="App">
       <form onSubmit={handleSubmit}>
-
-      
-      {/* <fieldset>
-        <div className="Field">
-          <label htmlFor="name">Name:</label>
-          <input id="name" type="text" placeholder="Name" name="name" value={name} onChange={(e)=>setName(e.target.value)}></input>
-        </div>
-        <button disabled={!name} type="submit">Submit</button>
-       </fieldset> */}
-
-       <fieldset>
-        <h2>Feedback form</h2>
-        <div className="Field">
-          <label>Score:{score}</label>
-          <input type="range" min="0" max="10" value={score} onChange={e => setScore(e.target.value)}/>
-        </div>
-        <div className="Field">
-          <label>Comment:</label>
-          <textarea  value={comment} onChange={e => setComment(e.target.value)}/>
-        </div>
-        <button type="submit">Submit</button>
-
-       </fieldset>
+        <fieldset>
+          <h2>Sign Up</h2>
+          <div className="Field">
+            <label>
+              First name <sup>*</sup>
+            </label>
+            <input type="text" placeholder="First name" value={firstName} onChange={(e)=>setFirstName(e.target.val)} />
+          </div>
+          <div className="Field">
+            <label>Last name</label>
+            <input  type="text" placeholder="Last name" value={lastName} onChange={(e)=>setLastName(e.target.value)} />
+          </div>
+          <div className="Field">
+            <label>
+              Email address <sup>*</sup>
+            </label>
+            <input type="text" placeholder="Email address" value={email} onChange={(e)=>setEmail(e.target.value)} />
+          </div>
+          <div className="Field">
+            <label>
+              Password <sup>*</sup>
+            </label>
+            <input type="password" placeholder="Password" value={password.value} onChange={(e) => setPassword({ ...password, value: e.target.value })}  onBlur={
+              () => setPassword({ ...password, isTouched: true})} />
+            {password.isTouched && password.length<8 ? (<PasswordErrorMessage/>):null}
+          </div>
+          <div className="Field">
+            <label>
+              Role <sup>*</sup>
+            </label>
+            <select value={role} onChange={(e)=>setRole(e.target.value)}>
+              <option value="role">Role</option>
+              <option value="individual">Individual</option>
+              <option value="business">Business</option>
+            </select>
+          </div>
+          <button type="submit" disabled={!getIsFormValid()}>
+            Create account
+          </button>
+        </fieldset>
       </form>
-
-
     </div>
   );
 }
