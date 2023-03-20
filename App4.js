@@ -14,7 +14,7 @@ function AddGoals(props){
     setForm({Goal:"",By:""});
   }
   const HandleChange=(e)=>{
-    setForm({...form,[e.target.name]:form.target.value});
+    setForm({...form,[e.target.name]:e.target.value});
   }
   return(
     <div className="AddGoals">
